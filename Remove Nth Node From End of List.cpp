@@ -5,7 +5,7 @@ public:
             return head;
         }
         
-        ListNode *t = head;
+        ListNode* t = head;
         int len = 0;
         
         while (t) {
@@ -24,7 +24,9 @@ public:
             len --;
         }
         
+        ListNode* temp = t -> next;
         t -> next = t -> next -> next;
+        delete temp;
         return head;
     }
 };
