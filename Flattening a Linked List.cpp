@@ -1,38 +1,35 @@
-Node *flatten(Node *root) {
-    Node* top = root;
-    Node* res = new Node(-1);
-    Node* head = res;
+Node* mergeTwoLists(Node* a, Node* b) {
+    Node* temp = new Node(0);
+    Node* res = temp; 
     
-    while(root -> data != INT_MAX){
-        Node* minNode = top;
-        
-        while (top) {
-            if (minNode -> data > top -> data)
-                minNode = top;
-            top = top -> next;
-        }   
-        
-        top = root;
-        res -> bottom = new Node(minNode -> data);
-        res = res -> bottom;
-        
-        if (minNode -> bottom != NULL){
-            Node* temp = minNode -> bottom;
-            minNode -> data = temp -> data;
-            minNode -> bottom = temp -> bottom;
-            delete temp;
-            
-        } else if (minNode -> next != NULL) {
-            Node* temp = minNode -> next;
-            minNode -> data = temp -> data;
-            minNode -> bottom = temp -> bottom;
-            minNode -> next = temp -> next;
-            delete temp;
+    while (a != NULL && b != NULL) {
+        if(a -> data < b -> data) {
+            temp -> bottom = a; 
+            temp = temp -> bottom; 
+            a = a -> bottom; 
             
         } else {
-          minNode -> data = INT_MAX;
+            temp -> bottom = b;
+            temp = temp -> bottom; 
+            b = b -> bottom; 
         }
     }
     
-    return head -> bottom;
+    if (a) {
+        temp -> bottom = a; 
+    } else {
+        temp -> bottom = b; 
+    }
+    
+    return res -> bottom; 
+}
+
+Node* flatten(Node *root) {
+    if (root == NULL || root -> next == NULL) 
+        return root; 
+            
+    root -> next = flatten(root -> next); 
+    root = mergeTwoLists(root, root -> next); 
+  
+    return root; 
 }
