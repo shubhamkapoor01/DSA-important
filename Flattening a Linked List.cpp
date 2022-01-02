@@ -34,5 +34,5 @@ Node *flatten(Node *root) {
         }
     }
     
-    return head->bottom;
+    return head -> bottom;
 }
