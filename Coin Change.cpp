@@ -1,33 +1,22 @@
 class Solution {
 public:
-    int solve(vector<int>& coins, int idx, int amt, vector<vector<int>>& dp) {
-        if (amt == 0) {
-            return 0;
-        }
-        
-        if (idx == coins.size()) {
-            return 1e6;
-        }
-        
-        if (dp[idx][amt] != -1) {
-            return dp[idx][amt];
-        }
-        
-        int skip = solve(coins, idx + 1, amt, dp);
-        int take = INT_MAX;
-        
-        if (amt >= coins[idx]) {
-            take = 1 + solve(coins, idx, amt - coins[idx], dp);
-        }
-        
-        dp[idx][amt] = min(skip, take);
-        return dp[idx][amt];
-    }
-    
-    int coinChange(vector<int>& coins, int amount) {
+    int coinChange(vector<int>& coins, int amt) {
         int n = coins.size();
-        vector<vector<int>> dp(n + 1, vector<int> (amount + 1, -1));
-        int ans = solve(coins, 0, amount, dp);
-        return ans == 1e6 ? -1 : ans;
+        vector<vector<int>> dp(n + 1, vector<int> (amt + 1, 0));
+        
+        for (int i = 0; i < amt + 1; i ++) {
+            dp[0][i] = 1e6;
+        }
+        
+        for (int i = 1; i <= n; i ++) {
+            for(int j = 1; j <= amt; j ++) {
+                dp[i][j] = dp[i - 1][j];
+                if (j >= coins[i - 1]) {
+                    dp[i][j] = min(dp[i][j], 1 + dp[i][j - coins[i - 1]]);
+                }
+            }
+        }
+        
+        return dp[n][amt] != 1e6 ? dp[n][amt] : -1;
     }
 };
