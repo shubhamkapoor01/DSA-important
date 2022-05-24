@@ -11,12 +11,10 @@ public:
                 continue;
             }
             
-            int idx = upper_bound(LIS.begin(), LIS.end(), nums[i]) - LIS.begin();
+            int idx = lower_bound(LIS.begin(), LIS.end(), nums[i]) - LIS.begin();
             
             if (idx < LIS.size()) {
-                if (idx == 0 || LIS[idx - 1] < nums[i]) {
-                    LIS[idx] = nums[i];
-                }
+                LIS[idx] = nums[i];
             }
         }
         
