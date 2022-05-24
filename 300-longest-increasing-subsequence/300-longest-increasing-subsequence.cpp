@@ -12,10 +12,7 @@ public:
             }
             
             int idx = lower_bound(LIS.begin(), LIS.end(), nums[i]) - LIS.begin();
-            
-            if (idx < LIS.size()) {
-                LIS[idx] = nums[i];
-            }
+            LIS[idx] = nums[i];
         }
         
         return LIS.size();
