@@ -1,29 +1,38 @@
 class Solution {
 public:
     string minRemoveToMakeValid(string s) {
-        set<int> extraOpen;
-        set<int> extraClose;
+        vector<int> extraOpen;
+        vector<int> extraClose;
         
         for (int i = 0; i < s.size(); i ++) {
             if (s[i] == '(') {
-                extraOpen.insert(i);
+                extraOpen.push_back(i);
                 
             } else if (s[i] == ')') {
                 if (!extraOpen.size()) {
-                    extraClose.insert(i);
+                    extraClose.push_back(i);
                     
                 } else {
-                    extraOpen.erase(prev(extraOpen.end()));
+                    extraOpen.pop_back();
                 }
             }
         }
         
         string ans;
-        for (int i = 0; i < s.size(); i ++) {
-            if (extraOpen.find(i) != extraOpen.end() || extraClose.find(i) != extraClose.end()) {
+        int i = 0;
+        int j = 0;
+        
+        for (int idx = 0; idx < s.size(); idx ++) {
+            if (i < extraOpen.size() && extraOpen[i] == idx) {
+                i ++;
                 continue;
             }
-            ans.push_back(s[i]);
+            
+            if (j < extraClose.size() && extraClose[j] == idx) {
+                j ++;
+                continue;
+            }
+            ans.push_back(s[idx]);
         }
         
         return ans;
