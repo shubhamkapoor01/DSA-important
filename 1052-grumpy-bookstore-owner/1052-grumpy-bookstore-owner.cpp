@@ -37,7 +37,7 @@ public:
                 totalSatisfied += customers[i];
                 
             } else {
-                totalSatisfied += grumpy[i] ? 0 : customers[i];
+                totalSatisfied += (1 - grumpy[i]) * customers[i];
             }
         }
         
