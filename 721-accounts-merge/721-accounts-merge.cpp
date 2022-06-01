@@ -1,45 +1,39 @@
 class DSU {
-public:
-    vector<int> representative;
-    vector<int> size;
+private:
+    unordered_map<int, int> parent;
+    unordered_map<int, int> rank;
     
-    DSU(int sz) : representative(sz), size(sz) {
-        for (int i = 0; i < sz; ++i) {
-            // Initially each group is its own representative
-            representative[i] = i;
-            // Intialize the size of all groups to 1
-            size[i] = 1;
+public:
+    DSU (int sz) {
+        for (int i = 0; i < sz; i ++) {
+            parent[i] = i;
+            rank[i] = 1;
         }
     }
     
-    // Finds the representative of group x
-    int findRepresentative(int x) {
-        if (x == representative[x]) {
+    int findParent(int x) {
+        if (x == parent[x]) {
             return x;
         }
-        
-        // This is path compression
-        return representative[x] = findRepresentative(representative[x]);
+        return parent[x] = findParent(parent[x]);
     }
     
-    // Unite the group that contains "a" with the group that contains "b"
-    void unionBySize(int a, int b) {
-        int representativeA = findRepresentative(a);
-        int representativeB = findRepresentative(b);
+    void unionByRank(int a, int b) {
+        int A = findParent(a);
+        int B = findParent(b);
         
-        // If nodes a and b already belong to the same group, do nothing.
-        if (representativeA == representativeB) {
+        if (A == B) {
             return;
         }
         
-        // Union by size: point the representative of the smaller
-        // group to the representative of the larger group.
-        if (size[representativeA] >= size[representativeB]) {
-            size[representativeA] += size[representativeB];
-            representative[representativeB] = representativeA;
-        } else {
-            size[representativeB] += size[representativeA];
-            representative[representativeA] = representativeB;
+        if (rank[A] < rank[B]) {
+            swap(A, B);
+        }
+        
+        parent[B] = A;
+        
+        if (rank[A] == rank[B]) {
+            rank[A] ++;
         }
     }
 };
@@ -48,10 +42,8 @@ class Solution {
 public:
     vector<vector<string>> accountsMerge(vector<vector<string>>& accountList) {
         int accountListSize = accountList.size();
-        DSU dsu(accountListSize);
-        
-        // Maps email to their component index
         unordered_map<string, int> emailGroup;
+        DSU dsu(accountListSize);
         
         for (int i = 0; i < accountListSize; i++) {
             int accountSize = accountList[i].size();
@@ -60,27 +52,21 @@ public:
                 string email = accountList[i][j];
                 string accountName = accountList[i][0];
                 
-                // If this is the first time seeing this email then
-                // assign component group as the account index
                 if (emailGroup.find(email) == emailGroup.end()) {
                     emailGroup[email] = i;
                 } else {
-                    // If we have seen this email before then union this
-                    // group with the previous group of the email
-                    dsu.unionBySize(i, emailGroup[email]);
+                    dsu.unionByRank(i, emailGroup[email]);
                 }
             }
         }
     
-        // Store emails corresponding to the component's representative
         unordered_map<int, vector<string>> components;
         for (auto emailIterator : emailGroup) {
             string email = emailIterator.first;
             int group = emailIterator.second;
-            components[dsu.findRepresentative(group)].push_back(email);
+            components[dsu.findParent(group)].push_back(email);
         }
 
-        // Sort the components and add the account name
         vector<vector<string>> mergedAccounts;
         for (auto componentIterator : components) {
             int group = componentIterator.first;
