@@ -11,26 +11,38 @@
  */
 
 class Solution {
-private:
-    void solve(TreeNode* root, int currDepth, int& maxDepth, unordered_map<int, int>& mp) {
-        if (!root) return;
-        maxDepth = max(maxDepth, currDepth);
-        if (mp.find(currDepth) == mp.end()) mp[currDepth] = root -> val;
-        solve(root -> right, currDepth + 1, maxDepth, mp);
-        solve(root -> left, currDepth + 1, maxDepth, mp);
-        return;
-    }
-    
 public:
     vector<int> rightSideView(TreeNode* root) {
         if (!root) return {};
-        unordered_map<int, int> mp;
-        int h = 0;
-        solve(root, 0, h, mp);
-        vector<int> v(h + 1);
-        for (auto &i: mp) {
-            v[i.first] = i.second;
+        queue<TreeNode*> q;
+        q.push(root);
+        vector<int> v;
+        v.push_back(root -> val);
+        
+        while (q.size()) {
+            int n = q.size();
+            bool start = false;
+            
+            while (n --) {
+                TreeNode*  root = q.front();
+                if (root -> right) {
+                    q.push(root -> right);
+                    if (!start) {
+                        v.push_back(root -> right -> val);
+                        start = true;
+                    }
+                }
+                if (root -> left) {
+                    q.push(root -> left);
+                    if (!start) {
+                        v.push_back(root -> left -> val);
+                        start = true;
+                    }
+                }
+                q.pop();
+            }
         }
+        
         return v;
     }
 };
