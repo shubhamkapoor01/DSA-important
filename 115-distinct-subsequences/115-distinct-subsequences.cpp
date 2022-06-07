@@ -4,22 +4,24 @@ public:
         int n = s.size();
         int m = t.size();
         
-        vector<vector<int>> dp(n + 1, vector<int> (m + 1, 0));
-        for (int i = 0; i <= n; i ++) {
-            dp[i][m] = 1;
-        }
+        vector<int> prev(m + 1, 0);
+        vector<int> curr(m + 1, 0);
+        
+        prev[m] = 1;
+        curr[m] = 1;
         
         int mod = 1000000007;
         
         for (int i = n - 1; i >= 0; i --) {
             for (int j = m - 1; j >= 0; j --) {
-                dp[i][j] = dp[i + 1][j];
+                curr[j] = prev[j];
                 if (s[i] == t[j]) {
-                    dp[i][j] = (dp[i][j] % mod + dp[i + 1][j + 1] % mod) % mod;
+                    curr[j] = (curr[j] % mod + prev[j + 1] % mod) % mod;
                 }
             }
+            prev = curr;
         }
         
-        return dp[0][0];
+        return curr[0];
     }
 };
