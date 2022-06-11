@@ -1,28 +1,36 @@
 class Solution {
 public:
     int minOperations(vector<int>& nums, int x) {
-        unordered_map<int, int> mp;
         int n = nums.size();
         int sum = 0;
-        
-        mp[0] = -1;
-        for (int i = 0; i < n; i ++) {
-            sum += nums[i];
-            mp[sum] = i;
+        for (auto num: nums) {
+            sum += num;
         }
         
-        int suffix = 0;
-        int steps = mp.find(x) != mp.end() ? mp[x] + 1 : INT_MAX;
+        if (x > sum) {
+            return -1;
+        }
         
-        for (int i = n - 1; i >= 0; i --) {
-            suffix += nums[i];
+        int steps = INT_MAX;
+        int curr = 0;
+        int we = 0;
+        int ws = 0;
+        
+        while (we < n) {
+            curr += nums[we];
             
-            if (mp.find(x - suffix) != mp.end() && mp[x - suffix] < i) {
-                steps = min(steps, mp[x - suffix] + 1 + n - i);
+            while (curr > sum - x) {
+                curr -= nums[ws];
+                ws ++;
             }
+            
+            if (curr == sum - x) {
+                steps = min(steps, n - (we - ws + 1));
+            }
+            we ++;
         }
         
-        return steps == INT_MAX ? -1 : steps;
+        return steps != INT_MAX ? steps : -1;
     }
 };
 
