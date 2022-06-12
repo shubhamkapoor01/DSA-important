@@ -8,7 +8,6 @@ public:
             mp[arr[i]].insert(i);
         }
         
-        unordered_set<int> explored;
         vector<int> vis(n, false);
         queue<pair<int, int>> q;
         q.push({0, 0});
@@ -34,15 +33,13 @@ public:
                 vis[index + 1] = true;
             }
             
-            if (explored.find(arr[index]) == explored.end()) {
-                explored.insert(arr[index]);
-                for (auto idx: mp[arr[index]]) {
-                    if (!vis[idx]) {
-                        q.push({idx, steps + 1});
-                        vis[idx] = true;
-                    }
+            for (auto idx: mp[arr[index]]) {
+                if (!vis[idx]) {
+                    q.push({idx, steps + 1});
+                    vis[idx] = true;
                 }
             }
+            mp.erase(arr[index]);
         }
         
         return -1;
