@@ -15,14 +15,15 @@ public:
             vector<long long> pref(m, 0);
             vector<long long> suff(m, 0);
             
-            for (int j = 0; j < m; j ++) {
-                if (j != 0) pref[j] = max(pref[j - 1] - 1LL, prev[j]);
-                if (j == 0) pref[j] = prev[j];
+            pref[0] = prev[0];
+            suff[m - 1] = prev[m - 1];
+            
+            for (int j = 1; j < m; j ++) {
+                pref[j] = max(pref[j - 1] - 1LL, prev[j]);
             }
             
-            for (int j = m - 1; j >= 0; j --) {
-                if (j != m - 1) suff[j] = max(suff[j + 1] - 1LL, prev[j]);
-                if (j == m - 1) suff[j] = prev[j];
+            for (int j = m - 2; j >= 0; j --) {
+                suff[j] = max(suff[j + 1] - 1LL, prev[j]);
             }
             
             for (int j = 0; j < m; j ++) {
