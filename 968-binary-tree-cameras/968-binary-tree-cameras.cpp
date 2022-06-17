@@ -12,37 +12,39 @@
 
 class Solution {
 private:
-    static const int looked_by_cam = 2;
-    static const int need_cam = 1;
-    static const int has_cam = 0;
+    const int lookedByCam = 0;
+    const int needsCam = 1;
+    const int hasCam = 2;
     
-    int camera;
-public:
-    
-    int find(TreeNode* node){
-        if (!node) return looked_by_cam;
-        
-        int left = find(node->left);
-        int right = find(node->right);
-        
-        if (left == need_cam || right == need_cam){
-            camera ++;
-            return has_cam;
+    int solve(TreeNode* root, int& cameras) {
+        if (!root) {
+            return lookedByCam;
         }
         
-        if (left == has_cam || right == has_cam){
-            return looked_by_cam;
+        if (!root -> left && !root -> right) {
+            return needsCam;
         }
         
-        return need_cam;
+        int left = solve(root -> left, cameras);
+        int right = solve(root -> right, cameras);
+        
+        if (left == needsCam || right == needsCam) {
+            cameras ++;
+            return hasCam;
+        }
+        
+        if (left == hasCam || right == hasCam) {
+            return lookedByCam;
+        }
+        
+        return needsCam;
     }
     
+public:
     int minCameraCover(TreeNode* root) {
-        camera = 0;
-        
-        int rootStatus = find(root);
-        if (rootStatus == need_cam) camera++;
-        
-        return camera;
+        int cameras = 0;
+        int rootStatus = solve(root, cameras);
+        if (rootStatus == needsCam) cameras ++;
+        return cameras;
     }
 };
