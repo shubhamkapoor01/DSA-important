@@ -1,6 +1,7 @@
 class Solution {
 public:
     vector<vector<string>> suggestedProducts(vector<string>& products, string searchWord) {
+        sort(products.begin(), products.end());
         unordered_map<string, vector<string>> mp;
         for (int i = 0; i < products.size(); i ++) {
             string curr = "";
@@ -8,9 +9,6 @@ public:
                 curr.push_back(products[i][j]);
                 mp[curr].push_back(products[i]);
             }
-        }
-        for (auto &i: mp) {
-            sort(i.second.begin(), i.second.end());
         }
         vector<vector<string>> ans;
         string word = "";
