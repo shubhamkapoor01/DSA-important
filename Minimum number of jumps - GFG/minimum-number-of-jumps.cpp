@@ -8,21 +8,27 @@ using namespace std;
 
 class Solution{
   public:
-    int minJumps(int arr[], int n){
+    int minJumps(int nums[], int n) {
         int jumps = 0;
-        int range = 0;
-        int end = 0;
-        for (int i = 0; i < n - 1; i ++) {
-            range = max(range, i + arr[i]);
-            if (i == end) {
-                end = range;
-                jumps ++;
+        int l = 0;
+        int r = 0;
+        while (r < n - 1) {
+            int range = 0;
+            for (int i = l; i <= r; i ++) {
+                range = max(range, i + nums[i]);
             }
+            
+            if (range == r) {
+                return -1;
+            }
+            
+            l = r + 1;
+            r = range;
+            jumps ++;
         }
-        return end >= n - 1 ? jumps : -1;
+        return jumps;
     }
 };
-
 
 
 // { Driver Code Starts.
