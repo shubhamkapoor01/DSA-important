@@ -30,8 +30,7 @@ class Solution
     vector<int> JobScheduling(Job arr[], int n) { 
         // your code here
         sort(arr, arr + n, [] (Job& a, Job& b) {
-            if (a.profit != b.profit) return a.profit > b.profit;
-            return a.dead < b.dead;
+            return a.profit > b.profit;
         });
         
         int countJobs = 0;
