@@ -1,20 +1,17 @@
 class Solution {
 private:
-    void solve(vector<int>& nums, int i, int p, vector<int>& curr, vector<vector<int>>& ans) {
-        if (i == nums.size()) {
-            ans.push_back(curr);
-            return;
-        }
+    void solve(vector<int>& nums, int i, vector<int>& curr, vector<vector<int>>& ans) {
+        ans.push_back(curr);
         
-        solve(nums, i + 1, 0, curr, ans);
-        if (i > 0 && nums[i] == nums[i - 1] && !p) {
-            return;
+        for (int j = i; j < nums.size(); j ++) {
+            if (j != i && nums[j] == nums[j - 1]) {
+                continue;
+            }
+            
+            curr.push_back(nums[j]);
+            solve(nums, j + 1, curr, ans);
+            curr.pop_back();
         }
-        
-        curr.push_back(nums[i]);
-        solve(nums, i + 1, 1, curr, ans);
-        curr.pop_back();
-        return;
     }
     
 public:
@@ -22,7 +19,7 @@ public:
         sort(nums.begin(), nums.end());
         vector<vector<int>> ans;
         vector<int> curr;
-        solve(nums, 0, 0, curr, ans);
+        solve(nums, 0, curr, ans);
         return ans;
     }
 };
