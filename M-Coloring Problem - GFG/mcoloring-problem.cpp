@@ -7,36 +7,34 @@ using namespace std;
 // Function to determine if graph can be coloured with at most M colours such
 // that no two adjacent vertices of graph are coloured with same colour.
 
-bool issafe(bool graph[101][101],vector<int> &visited,int node,int n,int col){
-    
-    for(int i=0;i<n;i++)
-    if(col!=node && graph[i][node] && visited[i]==col)
-    return false;
-
-return true;
-}
-bool color(bool graph[101][101],vector<int> &visited,int m,int n,int node){
-    if(node==n)
-    {
-        
+bool solve(bool graph[101][101], int idx, int n, int m, vector<int>& color) {
+    if (idx == n) {
         return true;
     }
     
-    for(int i=1;i<=m;i++){
-        if(issafe(graph,visited,node,n,i)){
-            visited[node]=i;
-            if(color(graph,visited,m,n,node+1))
-            return true;
-            
-            visited[node]=0;
+    for (int i = 1; i <= m; i ++) {
+        bool doable = true;
+        for (int j = 0; j < n; j ++) {
+            if (idx != j && graph[idx][j] && color[j] == i) {
+                doable = false;
+                break;
+            }
+        }
+        if (doable) {
+            color[idx] = i;
+            if (solve(graph, idx + 1, n, m, color)) {
+                return true;
+            }
+            color[idx] = 0;
         }
     }
+    
     return false;
 }
 
 bool graphColoring(bool graph[101][101], int m, int n) {
-    vector<int> visited(n,0);
-    return color(graph,visited,m,n,0);
+    vector<int> color(n, 0);
+    return solve(graph, 0, n, m, color);
 }
 
 
