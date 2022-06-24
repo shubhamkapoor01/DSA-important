@@ -12,13 +12,13 @@
 
 class Solution {
 private:
-    int solve(TreeNode* root, int curr, int& optimal) {
+    int solve(TreeNode* root, int& optimal) {
         if (!root) {
             return 0;
         }
         
-        int left = solve(root -> left, curr, optimal);
-        int right = solve(root -> right, curr, optimal);
+        int left = solve(root -> left, optimal);
+        int right = solve(root -> right, optimal);
         
         int rootAnsLeft = (root -> left && root -> val == root -> left -> val) ? left + 1 : 0;
         int rootAnsRight = (root -> right && root -> val == root -> right -> val) ? right + 1 : 0;
@@ -31,7 +31,7 @@ public:
     int longestUnivaluePath(TreeNode* root) {
         if (!root) return 0;
         int optimal = 0;
-        int rootAns = solve(root, 0, optimal);
+        int rootAns = solve(root, optimal);
         return optimal - 1;
     }
 };
