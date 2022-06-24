@@ -23,7 +23,7 @@ private:
         int rootAnsLeft = (root -> left && root -> val == root -> left -> val) ? left + 1 : 0;
         int rootAnsRight = (root -> right && root -> val == root -> right -> val) ? right + 1 : 0;
         
-        optimal = max({optimal, rootAnsLeft + rootAnsRight + 1});
+        optimal = max(optimal, rootAnsLeft + rootAnsRight + 1);
         return max(rootAnsLeft, rootAnsRight);
     }
     
