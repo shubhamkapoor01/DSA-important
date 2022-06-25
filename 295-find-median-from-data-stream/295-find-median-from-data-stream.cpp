@@ -14,7 +14,7 @@ public:
             maxHeap.push(num);
         }
         
-        while (maxHeap.size() && minHeap.size() && maxHeap.top() > minHeap.top()) {
+        if (maxHeap.size() && minHeap.size() && maxHeap.top() > minHeap.top()) {
             int maxHeapTop = maxHeap.top();
             int minHeapTop = minHeap.top();
             maxHeap.pop();
