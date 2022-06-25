@@ -17,7 +17,7 @@ struct custom_hash {
 class Solution {
 public:
     vector<int> topKFrequent(vector<int>& nums, int k) {
-        unordered_map<int, int> mp;
+        unordered_map<int, int, custom_hash> mp;
         int maxfreq = 0;
         for (auto i: nums) {
             maxfreq = max(maxfreq, ++ mp[i]);
