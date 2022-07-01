@@ -14,10 +14,14 @@ class Solution {
 public:
     vector<int> inorderTraversal(TreeNode* root) {
         vector<int> inorder;
-        stack<TreeNode*> st;
-        TreeNode* curr = root;
+        if (!root) {
+            return inorder;
+        }
         
-        while (curr || !st.empty()) {
+        TreeNode* curr = root;
+        stack<TreeNode*> st;
+        
+        while (curr || st.size()) {
             while (curr) {
                 st.push(curr);
                 curr = curr -> left;
