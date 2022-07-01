@@ -21,17 +21,12 @@ public:
         stack<TreeNode*> st;
         st.push(root);
         
-        while (!st.empty()) {
+        while (st.size()) {
             TreeNode* curr = st.top();
             st.pop();
             
-            if (curr -> left) {
-                st.push(curr -> left);
-            }
-            
-            if (curr -> right) {
-                st.push(curr -> right);
-            }
+            if (curr -> left) st.push(curr -> left);
+            if (curr -> right) st.push(curr -> right);
             
             postorder.push_back(curr -> val);
         }
