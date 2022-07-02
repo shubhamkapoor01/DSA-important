@@ -11,14 +11,17 @@
  */
 
 class Solution {
-private:
-    TreeNode* solve(TreeNode* root) {
+public:
+    void flatten(TreeNode* root) {
         if (!root) {
-            return root;
+            return;
         }
         
-        TreeNode* leftChild = solve(root -> left);
-        TreeNode* rightChild = solve(root -> right);
+        flatten(root -> left);
+        flatten(root -> right);
+        
+        TreeNode* leftChild = root -> left;
+        TreeNode* rightChild = root -> right;
         
         TreeNode* temp = root;
         temp -> right = leftChild;
@@ -29,12 +32,6 @@ private:
         }
         
         temp -> right = rightChild;
-        return root;
-    }
-    
-public:
-    void flatten(TreeNode* root) {
-        root = solve(root);
         return;
     }
 };
