@@ -11,27 +11,35 @@
  */
 
 class Solution {
+private:
+    pair<TreeNode*, TreeNode*> solve(TreeNode* root) {
+        if (!root || (!root -> left && !root -> right)) {
+            return {root, root};
+        }
+        
+        pair<TreeNode*, TreeNode*> leftList = solve(root -> left);
+        pair<TreeNode*, TreeNode*> rightList = solve(root -> right);
+        
+        root -> left = nullptr;
+        
+        if (!rightList.first) {
+            root -> right = leftList.first;
+            return {root, leftList.second};
+        }
+        
+        if (leftList.first) {
+            root -> right = leftList.first;
+            leftList.second -> right = rightList.first;
+        } else {
+            root -> right = rightList.first;
+        }
+        
+        return {root, rightList.second};
+    }
+    
 public:
     void flatten(TreeNode* root) {
-        if (!root) {
-            return;
-        }
-        
-        flatten(root -> left);
-        flatten(root -> right);
-        
-        TreeNode* leftChild = root -> left;
-        TreeNode* rightChild = root -> right;
-        
-        TreeNode* temp = root;
-        temp -> right = leftChild;
-        temp -> left = nullptr;
-        
-        while (temp && temp -> right) {
-            temp = temp -> right;
-        }
-        
-        temp -> right = rightChild;
+        root = solve(root).first;
         return;
     }
 };
