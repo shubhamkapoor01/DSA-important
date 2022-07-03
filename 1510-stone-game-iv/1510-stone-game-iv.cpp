@@ -8,6 +8,9 @@ public:
         for (int i = 2; i <= n; i ++) {
             for (int j = 1; j * j <= i; j ++) {
                 dp[i] |= !dp[i - j * j];
+                if (dp[i]) {
+                    break;
+                }
             }
         }
         
