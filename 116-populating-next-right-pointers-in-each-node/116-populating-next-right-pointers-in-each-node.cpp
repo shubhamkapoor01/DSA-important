@@ -19,13 +19,16 @@ public:
 class Solution {
 public:
     Node* connect(Node* root) {
-        if (!root || (!root -> left && !root -> right)) return root;
-        
-        root -> left -> next = root -> right;
-        root -> right -> next = root -> next ? root -> next -> left : nullptr;
-        
-        connect(root -> right);
-        connect(root -> left);
+        Node* curr = root;
+        while (curr) {
+            Node* down = curr -> left;
+            while (curr && curr -> left) {
+                curr -> left -> next = curr -> right;
+                curr -> right -> next = curr -> next ? curr -> next -> left : nullptr;
+                curr = curr -> next;
+            }
+            curr = down;
+        }
         return root;
     }
 };
