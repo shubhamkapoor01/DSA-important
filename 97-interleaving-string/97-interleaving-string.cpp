@@ -1,6 +1,6 @@
 class Solution {
 private:
-    int dp[101][101][201];
+    int dp[101][201];
     
 public:
     Solution() {
@@ -13,19 +13,19 @@ public:
         if (i == s1.size()) return s2.substr(j) == s3.substr(k);
         if (j == s2.size()) return s1.substr(i) == s3.substr(k);
         
-        if (dp[i][j][k] != -1) return dp[i][j][k];
+        if (dp[i][k] != -1) return dp[i][k];
         
         if (s1[i] == s3[k] && s2[j] == s3[k]) {
-            return dp[i][j][k] = solve(s1, s2, s3, i + 1, j, k + 1) || solve(s1, s2, s3, i, j + 1, k + 1);
+            return dp[i][k] = solve(s1, s2, s3, i + 1, j, k + 1) || solve(s1, s2, s3, i, j + 1, k + 1);
             
         } else if (s1[i] == s3[k]) {
-            return dp[i][j][k] = solve(s1, s2, s3, i + 1, j, k + 1);
+            return dp[i][k] = solve(s1, s2, s3, i + 1, j, k + 1);
         
         } else if (s2[j] == s3[k]) {
-            return dp[i][j][k] = solve(s1, s2, s3, i, j + 1, k + 1);
+            return dp[i][k] = solve(s1, s2, s3, i, j + 1, k + 1);
             
         } else {
-            return false;
+            return dp[i][k] = false;
         }
     }
     
