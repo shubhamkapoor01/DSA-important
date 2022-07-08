@@ -24,20 +24,18 @@ public:
             sum += i;
         }
 
-        vector<int> prev(sum + 1, 0);
-        vector<int> curr(sum + 1, 0);
+        vector<int> dp(sum + 1, 0);
         
         for (int i = 0; i <= n; i ++) {
-            for (int s = 0; s <= sum; s ++) {
+            for (int s = sum; s >= 0; s --) {
                 if (i == 0) {
-                    curr[s] = abs(sum - 2 * s);
+                    dp[s] = abs(sum - 2 * s);
                 } else {
-                    curr[s] = min(prev[s], ((s - stones[i - 1] >= 0) ? prev[s - stones[i - 1]] : 1000000));
+                    dp[s] = min(dp[s], ((s - stones[i - 1] >= 0) ? dp[s - stones[i - 1]] : 1000000));
                 }
             }
-            prev = curr;
         }
         
-        return curr[sum];
+        return dp[sum];
     }
 };
