@@ -23,19 +23,21 @@ public:
         for (auto i: stones) {
             sum += i;
         }
-        
-        vector<vector<int>> dp(n + 1, vector<int> (sum + 1, 0));
+
+        vector<int> prev(sum + 1, 0);
+        vector<int> curr(sum + 1, 0);
         
         for (int i = 0; i <= n; i ++) {
             for (int s = 0; s <= sum; s ++) {
                 if (i == 0) {
-                    dp[i][s] = abs(sum - 2 * s);
+                    curr[s] = abs(sum - 2 * s);
                 } else {
-                    dp[i][s] = min(dp[i - 1][s], ((s - stones[i - 1] >= 0) ? dp[i - 1][s - stones[i - 1]] : 1000000));
+                    curr[s] = min(prev[s], ((s - stones[i - 1] >= 0) ? prev[s - stones[i - 1]] : 1000000));
                 }
             }
+            prev = curr;
         }
         
-        return dp[n][sum];
+        return curr[sum];
     }
 };
