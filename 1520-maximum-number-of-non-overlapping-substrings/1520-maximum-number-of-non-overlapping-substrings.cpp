@@ -6,13 +6,13 @@ public:
         vector<int> skip(26, 0);
         vector<string> result;
 
-        for (int i = 0; i < s.size(); ++i) {
+        for (int i = 0; i < s.size(); i ++) {
             start[s[i] - 'a'] = min(start[s[i] - 'a'], i);
             end[s[i] - 'a'] = i;
         }
 
-        for (int i = 0; i < 26; ++i) {
-            for (int j = start[i]; j <= end[i]; ++j) {
+        for (int i = 0; i < 26; i ++) {
+            for (int j = start[i]; j <= end[i]; j ++) {
                 if (start[s[j] - 'a'] < start[i]) {
                     skip[i] = 1;
                 } else {
@@ -21,9 +21,10 @@ public:
             }
         }
 
-        for (int i = s.size() - 1, cut = INT_MAX; i >= 0; --i) {
+        for (int i = s.size() - 1, cut = INT_MAX; i >= 0; i --) {
             if (i == start[s[i] - 'a'] && end[s[i] - 'a'] < cut && !skip[s[i] - 'a']) {
-                result.push_back(s.substr((cut = i), end[s[i] - 'a'] - i + 1));
+                result.push_back(s.substr(i, end[s[i] - 'a'] - i + 1));
+                cut = i;
             }
         }
 
