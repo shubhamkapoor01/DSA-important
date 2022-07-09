@@ -1,5 +1,3 @@
-#define ll long long
-
 class Solution {
 private:
     void fillNextSmaller(vector<int>& nextSmaller, vector<int>& heights) {
