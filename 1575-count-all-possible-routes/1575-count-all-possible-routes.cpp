@@ -1,36 +1,27 @@
 class Solution {
-private:
-    int dp[101][201];
-    int MOD;
-    
-    int solve(vector<int>& locations, int curr, int finish, int fuel) {
-        if (fuel < 0) {
-            return 0;
+public:
+    int countRoutes(vector<int>& locations, int start, int finish, int fuel) {
+        int n = locations.size();
+        int dp[n][fuel + 1];
+        int MOD = 1000000007;
+        
+        memset(dp, 0, sizeof(dp));
+        for (int i = 0; i <= fuel; i ++) {
+            dp[finish][i] = 1;
         }
         
-        if (dp[curr][fuel] != -1) {
-            return dp[curr][fuel];
-        }
-        
-        int ans = (curr == finish);
-        
-        for (int i = 0; i < locations.size(); i ++) {
-            if (i != curr) {
-                ans = (ans + solve(locations, i, finish, fuel - abs(locations[i] - locations[curr]))) % MOD;
+        for (int j = 1; j <= fuel; j ++) {
+            for (int i = 0; i < n; i ++) {
+                int ans = (i == finish);
+                for (int k = 0; k < n; k ++) {
+                    if (i != k && j >= abs(locations[i] - locations[k])) {
+                        ans = (ans + dp[k][j - abs(locations[i] - locations[k])]) % MOD;
+                    }
+                }
+                dp[i][j] = ans;
             }
         }
         
-        dp[curr][fuel] = ans;
-        return ans;
-    }
-    
-public:
-    Solution() {
-        memset(dp, -1, sizeof(dp));
-        MOD = 1e9 + 7;
-    }
-    
-    int countRoutes(vector<int>& locations, int start, int finish, int fuel) {
-        return solve(locations, start, finish, fuel);
+        return dp[start][fuel];
     }
 };
