@@ -1,32 +1,28 @@
 class Solution {
-private:
-    int dp[501][501];
-    int MOD;
-    
 public:
-    Solution() {
-        memset(dp, -1, sizeof(dp));
-        MOD = 1000000007;
-    }
-    
-    int numWays(int steps, int size, int i = 0, int pos = 0) {
-        if (pos >= size || pos < 0 || steps - i < pos) {
-            return 0;
+    int numWays(int steps, int size) {
+        size = min(steps, size);
+        int mod = 1000000007;
+        
+        int prev[size + 1];
+        int curr[size + 1];
+        
+        memset(prev, 0, sizeof(prev));
+        memset(curr, 0, sizeof(curr));
+        prev[0] = 1;
+        
+        for (int i = 1; i <= steps; i ++) {
+            for (int j = 0; j <= size; j ++) {
+                int stay = prev[j];
+                int left = j > 0 ? prev[j - 1] : 0;
+                int right = j < size - 1 ? prev[j + 1] : 0;
+                curr[j] = ((left + right) % mod + stay) % mod;
+            }
+            for (int j = 0; j <= size; j ++) {
+                prev[j] = curr[j];
+            }
         }
         
-        if (i == steps) {
-            return pos == 0;
-        }
-        
-        if (dp[i][pos] != -1) {
-            return dp[i][pos];
-        }
-        
-        int ans = numWays(steps, size, i + 1, pos - 1);
-        ans = (ans + numWays(steps, size, i + 1, pos + 1)) % MOD;
-        ans = (ans + numWays(steps, size, i + 1, pos)) % MOD;
-        
-        dp[i][pos] = ans;
-        return ans;
+        return curr[0];
     }
 };
