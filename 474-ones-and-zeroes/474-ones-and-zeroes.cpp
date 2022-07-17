@@ -1,7 +1,8 @@
 class Solution {
 public:
     int findMaxForm(vector<string>& strs, int m, int n) {
-        unordered_map<int, pair<int, int>> mp;
+        vector<pair<int, int>> mp(strs.size());
+        
         for (int i = 0; i < strs.size(); i ++) {
             int o = 0;
             int z = 0;
