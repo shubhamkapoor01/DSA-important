@@ -15,19 +15,21 @@ public:
             mp[i] = {z, o};
         }
         
-        vector<vector<vector<int>>> dp(strs.size() + 1, vector<vector<int>> (m + 1, vector<int> (n + 1, 0)));
+        vector<vector<int>> curr(m + 1, vector<int> (n + 1, 0));
+        vector<vector<int>> prev(m + 1, vector<int> (n + 1, 0));
         
         for (int i = 1; i <= strs.size(); i ++) {
             for (int j = 0; j <= m; j ++) {
                 for (int k = 0; k <= n; k ++) {
-                    dp[i][j][k] = dp[i - 1][j][k];
+                    curr[j][k] = prev[j][k];
                     if (j >= mp[i - 1].first && k >= mp[i - 1].second) {
-                        dp[i][j][k] = max(dp[i][j][k], 1 + dp[i - 1][j - mp[i - 1].first][k - mp[i - 1].second]);
+                        curr[j][k] = max(curr[j][k], 1 + prev[j - mp[i - 1].first][k - mp[i - 1].second]);
                     }
                 }
             }
+            prev = curr;
         }
         
-        return dp[strs.size()][m][n];
+        return curr[m][n];
     }
 };
