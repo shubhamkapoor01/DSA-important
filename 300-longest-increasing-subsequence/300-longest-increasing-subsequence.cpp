@@ -3,18 +3,14 @@ public:
     int lengthOfLIS(vector<int>& nums) {
         int n = nums.size();
         vector<int> LIS;
-        LIS.push_back(nums[0]);
-        
-        for (int i = 1; i < n; i ++) {
-            if (nums[i] > LIS.back()) {
-                LIS.push_back(nums[i]);
-                continue;
+        for (auto &ele: nums) {
+            if (LIS.empty() || ele > LIS.back()) {
+                LIS.push_back(ele);
+            } else {
+                int idx = lower_bound(LIS.begin(), LIS.end(), ele) - LIS.begin();
+                LIS[idx] = ele;
             }
-            
-            int idx = lower_bound(LIS.begin(), LIS.end(), nums[i]) - LIS.begin();
-            LIS[idx] = nums[i];
         }
-        
         return LIS.size();
     }
 };
