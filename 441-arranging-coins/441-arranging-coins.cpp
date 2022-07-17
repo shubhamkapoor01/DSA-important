@@ -1,16 +1,12 @@
 class Solution {
 public:
-    int arrangeCoins(int n) {
-        long l = 0;
-        long r = 1 << 16;
-        while (l <= r) {
-            long m = l + (r - l) / 2;
-            if (m * (m + 1) / 2 <= n) {
-                l = m + 1;
-            } else {
-                r = m - 1;
-            }
-        }
-        return l - 1;
+    int arrangeCoins(long n) {
+        return (1 + sqrt(1 + 8 * n)) / 2 - 1;
     }
 };
+
+
+// m*(m+1) = 2*n;
+// m^2 + m = 2*n;
+// m^2 + m - 2*n = 0;
+// m = (1 + sqrt(1 + 8 * n)) / 2;
