@@ -1,38 +1,33 @@
 class Solution {
-private:
-    unordered_map<int, pair<int, int>> mp;
-    
-    int solve(int i, int cm, int cn, int m, int n, vector<vector<vector<int>>>& dp) {
-        if (i == mp.size()) {
-            return 0;
-        }
-        
-        if (dp[i][cm][cn] != -1) {
-            return dp[i][cm][cn];
-        }
-        
-        int ans = solve(i + 1, cm, cn, m, n, dp);
-        
-        if (mp[i].first + cm <= m && mp[i].second + cn <= n) {
-            ans = max(ans, 1 + solve(i + 1, cm + mp[i].first, cn + mp[i].second, m, n, dp));
-        }
-        
-        dp[i][cm][cn] = ans;
-        return ans;
-    }
-    
 public:
     int findMaxForm(vector<string>& strs, int m, int n) {
-        vector<vector<vector<int>>> dp(strs.size() + 1, vector<vector<int>> (m + 1, vector<int> (n + 1, -1)));
+        unordered_map<int, pair<int, int>> mp;
         for (int i = 0; i < strs.size(); i ++) {
             int o = 0;
             int z = 0;
             for (auto &j: strs[i]) {
-                if (j == '1') o ++;
-                else z ++;
+                if (j == '1') {
+                    o ++;
+                } else {
+                    z ++;
+                }
             }
             mp[i] = {z, o};
         }
-        return solve(0, 0, 0, m, n, dp);
+        
+        vector<vector<vector<int>>> dp(strs.size() + 1, vector<vector<int>> (m + 1, vector<int> (n + 1, 0)));
+        
+        for (int i = 1; i <= strs.size(); i ++) {
+            for (int j = 0; j <= m; j ++) {
+                for (int k = 0; k <= n; k ++) {
+                    dp[i][j][k] = dp[i - 1][j][k];
+                    if (j >= mp[i - 1].first && k >= mp[i - 1].second) {
+                        dp[i][j][k] = max(dp[i][j][k], 1 + dp[i - 1][j - mp[i - 1].first][k - mp[i - 1].second]);
+                    }
+                }
+            }
+        }
+        
+        return dp[strs.size()][m][n];
     }
 };
