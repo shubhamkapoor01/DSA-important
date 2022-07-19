@@ -1,29 +1,41 @@
 class Solution {
 public:
     int superEggDrop(int k, int n) {
-        // dp[moves][k] -> how many floors at max can we solve the question for
-        // when we have maximum "moves" moves to use and k eggs to throw from
-        // moves can be n in worst case hence dp with n + 1 rows is used here
         vector<vector<int>> dp(n + 1, vector<int> (k + 1, 0));
         
-        int moves = 0;
-        while (dp[moves][k] < n) {
-            moves ++;
+        for (int i = 1; i <= n; i ++) {
+            dp[i][1] = i;
+        }
+        
+        for (int i = 1; i <= k; i ++) {
+            dp[1][i] = 1;
+        }
+        
+        for (int i = 2; i <= n; i ++) {
+            for (int j = 2; j <= k; j ++) {
+                int moves = 1e9;
+                int r = i;
+                int l = 1;
+                
+                while (l <= r) {
+                    int m = l + (r - l) / 2;
+                    
+                    int breaks = dp[m - 1][j - 1];
+                    int notbreaks = dp[i - m][j];
+                    
+                    moves = min(moves, max(breaks, notbreaks));
+                    
+                    if (breaks < notbreaks) {
+                        l = m + 1;
+                    } else {
+                        r = m - 1;
+                    }
+                }
             
-            for (int i = 1; i <= k; i ++) {
-                // dp[moves - 1][i - 1] -> when egg breaks we check below the 
-                // current floor with i - 1 eggs and moves - 1 remaining moves
-                dp[moves][i] += dp[moves - 1][i - 1];
-                
-                // dp[moves - 1][i] -> when egg does not break, we check above
-                // the current floor with i eggs and moves - 1 remaining moves
-                dp[moves][i] += dp[moves - 1][i];
-                
-                // 1 is added to cunt the current floor the egg is thrown from
-                dp[moves][i] += 1;
+                dp[i][j] = 1 + moves;
             }
         }
         
-        return moves;
+        return dp[n][k];
     }
 };
