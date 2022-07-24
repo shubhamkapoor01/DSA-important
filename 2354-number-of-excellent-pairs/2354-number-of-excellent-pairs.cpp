@@ -1,43 +1,34 @@
 #define ll long long
 
-#include <ext/pb_ds/assoc_container.hpp>
-#include <ext/pb_ds/tree_policy.hpp>
-using namespace __gnu_pbds;
-
-template <class T> using ordered_set = tree<T, null_type, less_equal<T>, rb_tree_tag, tree_order_statistics_node_update>;
-
 class Solution {
 public:
     ll countExcellentPairs(vector<int>& nums, int k) {
         ll n = nums.size();
         ll ans = 0;
         
-        set<ll> unique;
+        vector<ll> bucket(32);
+        unordered_set<ll> st;
+        
         for (auto &i: nums) {
-            unique.insert(i);
-        }
-        
-        ordered_set<ll> st;
-        
-        
-        for (auto &num: unique) {
-            ll temp = num;
-            ll bits = 0;
+            if (st.count(i)) continue;
+            st.insert(i);
             
-            while (temp) {
-                bits += (temp & 1);
-                temp /= 2;
+            int bits = 0;
+            while (i) {
+                bits += (i & 1);
+                i /= 2;
             }
             
-            ans += 2 * (st.size() - st.order_of_key(k - bits));
+            if (2 * bits >= k) ans ++;
             
-            if (2 * bits >= k) {
-                ans ++;
+            for (ll j = 0; j < 32; j ++) {
+                if (j + bits >= k) {
+                    ans += 2 * bucket[j];
+                }
             }
-            
-            st.insert(bits);
+                
+            bucket[bits] ++;
         }
-        
         return ans;
     }
 };
