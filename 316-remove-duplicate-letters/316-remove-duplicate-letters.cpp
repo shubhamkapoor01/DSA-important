@@ -8,7 +8,7 @@ public:
             last[s[i] - 'a'] = i;
         }
         
-        vector<int> vis(26, 0);
+        vector<bool> vis(26, 0);
         string ans;
         
         for (int i = 0; i < n; i ++) {
