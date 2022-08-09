@@ -9,18 +9,16 @@ public:
         
         for (int i = 0; i < n; i ++) {
             currGas += gas[i] - cost[i];
+            
             if (currGas < 0) {
                 currGas = 0;
                 start = i + 1;
             }
+            
             totalCost += cost[i];
             totalGas += gas[i];
         }
         
-        if (totalGas < totalCost) {
-            return -1;
-        }
-        
-        return start;
+        return totalGas < totalCost ? -1 : start;
     }
 };
