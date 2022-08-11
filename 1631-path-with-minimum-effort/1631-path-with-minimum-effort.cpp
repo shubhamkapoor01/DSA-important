@@ -19,7 +19,7 @@ public:
             int c = pq.top()[2];
             
             if (r == n - 1 && c == m - 1) {
-                return d;
+                return dist[r][c];
             }
             
             pq.pop();
