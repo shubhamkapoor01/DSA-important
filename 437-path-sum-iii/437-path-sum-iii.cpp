@@ -12,22 +12,31 @@
 
 class Solution {
 private:
-    void solve(TreeNode* root, long target, int& rootPaths) {
-        if (!(target - root -> val)) {
-            rootPaths ++;
+    unordered_map<long, long> prefix;
+    
+    void solve(TreeNode* root, long& sum, int& target, int& cnt) {
+        if (!root) {
+            return;
         }
         
-        if (root -> left) solve(root -> left, target - root -> val, rootPaths);
-        if (root -> right) solve(root -> right, target - root -> val, rootPaths);
+        sum += root -> val;
+        cnt += prefix[sum - target];
+        prefix[sum] ++;
+        
+        solve(root -> left, sum, target, cnt);
+        solve(root -> right, sum, target, cnt);
+        
+        prefix[sum] --;
+        sum -= root -> val;
+        return;
     }
     
 public:
     int pathSum(TreeNode* root, int target) {
-        if (!root) return 0;
-        int left = pathSum(root -> left, target);
-        int right = pathSum(root -> right, target);
-        int rootPaths = 0;
-        solve(root, target, rootPaths);
-        return left + rootPaths + right;
+        prefix[0] = 1;
+        long sum = 0;
+        int cnt = 0;
+        solve(root, sum, target, cnt);
+        return cnt;
     }
 };
