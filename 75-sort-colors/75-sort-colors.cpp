@@ -11,7 +11,7 @@ public:
                 swap(nums[m], nums[l]);
                 l ++;
                 m ++;
-                
+            
             } else if (nums[m] == 2) {
                 swap(nums[m], nums[r]);
                 r --;
@@ -22,3 +22,12 @@ public:
         }
     }
 };
+
+//   r
+// 1 0 2
+//   m
+// l
+        
+        
+        
+        
