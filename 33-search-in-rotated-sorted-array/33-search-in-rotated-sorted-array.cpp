@@ -12,22 +12,22 @@ public:
                 return m;
             }
             
-            if (nums[m] < nums[r]) {
-                if (target > nums[m] && target <= nums[r]) {
-                    l = m + 1;
-                } else {
+            if (nums[m] > nums[r]) {
+                if (nums[m] > target && target > nums[r]) {
                     r = m - 1;
+                } else {
+                    l = m + 1;
                 }
-            
+                
             } else {
-                if (target > nums[m] || target <= nums[r]) {
+                if (nums[m] < target && target <= nums[r]) {
                     l = m + 1;
                 } else {
                     r = m - 1;
                 }
             }
         }
-    
+        
         return -1;
     }
 };
