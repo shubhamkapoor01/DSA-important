@@ -7,11 +7,12 @@ public:
         int prefix = 0;
         for (int i = 0; i < n; i ++) {
             if (s[i] == '1') {
-                ans = max(prev, i - prefix);
-                prefix ++;
+                ans = max(prev, prefix);
                 if (ans) {
                     prev = ans + 1;
                 }
+            } else {
+                prefix ++;
             }
         }
         return ans;
