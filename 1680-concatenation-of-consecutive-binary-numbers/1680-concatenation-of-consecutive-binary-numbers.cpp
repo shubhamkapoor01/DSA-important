@@ -1,33 +1,17 @@
-#define ll long long
-#define mod 1000000007
-
-ll dp[100001];
-
 class Solution {
 public:
     int concatenatedBinary(int n) {
-        if (dp[n]) {
-            return dp[n];
-        }
-        ll ans = 0;
-        for (ll i = 1; i <= n; i ++) {
-            ll num = i;
-            vector<ll> t;
-            while (num) {
-                t.push_back(num & 1);
-                num >>= 1;
+        long mod = 1e9+7;
+        long ans = 0;
+        long len = 0;
+        
+        for (int i = 1; i <= n; ++i) {
+            if ((i & (i - 1)) == 0) {
+                len ++;
             }
-            ll j = t.size() - 1;
-            while (j >= 0) {
-                if (t[j] & 1) {
-                    ans = (2 * ans + 1) % mod;
-                } else {
-                    ans = (2 * ans) % mod;
-                }
-                j --;
-            }
-            dp[i] = ans;
+            ans = ((ans << len) % mod + i) % mod;
         }
+        
         return ans;
     }
 };
