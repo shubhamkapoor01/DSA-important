@@ -12,6 +12,7 @@ public:
         
         for (int i = n; i >= 0; i--) {
             for (int j = 0; j <= k; j++) {
+                
                 if (i == n) {
                     dp[n][j] = 0; 
                     continue;
@@ -26,7 +27,7 @@ public:
                 int max_del = j;
                 int cnt = 0;
                 
-                for (int i_end = i; i_end < n && max_del >= 0; i_end++) {
+                for (int i_end = i; i_end < n && max_del >= 0; i_end ++) {
                     if (s[i_end] == s[i]) {
                         cnt ++;
                         
