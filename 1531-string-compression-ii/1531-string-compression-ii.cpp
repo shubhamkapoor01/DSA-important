@@ -1,6 +1,6 @@
 class Solution {
 public:
-    inline int getLength(int cnt) {
+    int getLength(int cnt) {
         return cnt == 1 ? 1 : (cnt < 10 ? 2 : (cnt < 100 ? 3 : 4));
     }
     
