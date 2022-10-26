@@ -5,25 +5,17 @@ public:
         mp[0] = -1;
         
         int n = nums.size();
-        int sum = 0;
+        int prefix_sum = 0;
         
         for (int i = 0; i < n; i ++) {
-            if (nums[i] == 0) {
-                if (i + 1 < n && nums[i + 1] == 0) {
-                    return true;
-                }
-                continue;
+            prefix_sum = (prefix_sum + nums[i]) % k;
+            
+            if (mp.find(prefix_sum) == mp.end()) {
+                mp[prefix_sum] = i;
             }
             
-            sum += nums[i];
-            
-            if (mp.find(sum % k) != mp.end()) {
-                if (i - mp[sum % k] > 1) {
-                    return true;
-                }
-                
-            } else {
-                mp[sum % k] = i;
+            if (i - mp[prefix_sum] > 1) {
+                return true;
             }
         }
         
